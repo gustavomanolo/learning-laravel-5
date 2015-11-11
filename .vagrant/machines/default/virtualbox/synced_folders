@@ -1,0 +1,1 @@
+{"virtualbox":{"/home/vagrant/learning-laravel-5":{"type":null,"mount_options":[],"guestpath":"/home/vagrant/learning-laravel-5","hostpath":"/Applications/MAMP/htdocs/learning-laravel-5","disabled":false},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Applications/MAMP/htdocs/learning-laravel-5","disabled":false}}}
