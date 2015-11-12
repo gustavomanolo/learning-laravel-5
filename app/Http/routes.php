@@ -11,11 +11,11 @@
 |
 */
 
-/*Route::get('/', function () {
+Route::get('/', function () {
     return view('welcome');
 });
 
-
+/*
 //Route::get('/contact', 'WelcomeController@contact');
 
 Route::get('contact', function () {
@@ -25,3 +25,9 @@ Route::get('contact', function () {
 
 Route::get('about', 'PagesController@about');
 Route::get('contact', 'PagesController@contact');
+
+//-> Display articles
+Route::get('articles', 'ArticlesController@index');
+Route::get('articles/create', 'ArticlesController@create');
+Route::get('articles/{id}', 'ArticlesController@show');
+Route::post('articles', 'ArticlesController@store');
