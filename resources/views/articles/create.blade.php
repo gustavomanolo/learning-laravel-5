@@ -15,9 +15,28 @@
 			{!! Form::label('body', "Body: ") !!}
 			{!! Form::textarea('body', null, ['class'=>'form-control']) !!}
 		</div>
+	
+		{{-- Create an "input type => date" --}}
+		<div class="form-group">
+			{!! Form::label('published_at', "Publish on: ") !!}
+			{!! Form::input('date','published_at', date('Y-m-d'), ['class'=>'form-control']) !!}
+		</div>
 
 		{!! Form::submit('Add article', ['class'=>'btn btn-primary form-control']) !!}
 
 	{!! Form::close() !!}
+
+
+	{{-- Display Errors
+		*** A view always have access to an "errors" variable
+	--}}
+
+	@if ($errors->any())
+		<ul class="alert alert-danger">
+			@foreach ( $errors->all() as $error)
+				<li>{{ $error }}</li>
+			@endforeach
+		</ul>
+	@endif
 
 @stop

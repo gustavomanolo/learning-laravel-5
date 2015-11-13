@@ -6,4 +6,6 @@
 	<article>
 		{{$article->body}}
 	</article>
+
+	Published {{$article->published_at->diffForHumans()}}
 @stop
