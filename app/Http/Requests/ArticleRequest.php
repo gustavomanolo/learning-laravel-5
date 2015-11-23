@@ -4,7 +4,13 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class CreateArticleRequest extends Request
+/**
+ * Class CreateArticleRequest
+ * @package App\Http\Requests
+ * Had a name before of "CreateArticleRequest.php but this only made validations for the "create" method, changing the name to "ArticleRequest" make validations for all kind of controller functions
+ */
+
+class ArticleRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

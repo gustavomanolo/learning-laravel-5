@@ -33,3 +33,33 @@ Route::get('articles/{id}', 'ArticlesController@show');
 Route::post('articles', 'ArticlesController@store');*/
 
 Route::resource('articles', 'ArticlesController');
+
+
+/*Route::controllers([
+   'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController'
+]);*/
+
+
+// Authentication routes...
+Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::post('auth/login', 'Auth\AuthController@postLogin');
+Route::get('auth/logout', 'Auth\AuthController@getLogout');
+
+// Registration routes...
+Route::get('auth/register', 'Auth\AuthController@getRegister');
+Route::post('auth/register', 'Auth\AuthController@postRegister');
+
+Route::get('/home', function(){
+    return "This is yoru panel";
+});
+
+Route::get('foo', ['middleware'=>'manager', function(){
+    return 'This page may only be viewed by managers';
+}]);
+
+
+/**
+ *  Can attach a middleware to a route from here
+ * Route::get('about', ['middleware'=>'auth', 'uses'=>'PagesCOntroller@about'];
+ */

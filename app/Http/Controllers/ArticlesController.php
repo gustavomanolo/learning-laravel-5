@@ -7,12 +7,25 @@ use Illuminate\Http\Request;
 
 use App\Article;
 use App\Http\Requests;
+use App\Http\Requests\ArticleRequest;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 
 class ArticlesController extends Controller
 {
+    public function __construct()
+    {
+        /*-> The 'auth' is from "Kernel.php" -> $routeMiddleware
+            //-> Can use 'except' to apply to every function except that one
+        */
+        $this->middleware('auth', ['only' => 'create']);
+        //$this->middleware('auth', ['except' => ['index', 'show']]);
+    }
+
     public function index(){
+
+        //return \Auth::user()->toArray();
+
     	//return 'Get all articles';
 
     	//$articles = Article::all();
@@ -34,19 +47,30 @@ class ArticlesController extends Controller
     	return view('articles.index', compact('articles'));
     }
 
-    public function show($id){
+    //-> Changed to use "Route-model-binding" so then receive an intance of the model
+    public function show(Article $article){
+    //public function show($id){
     	/*$article = Article::find($id);
     	if( is_null($article)){
     		abort(404);
     	}*/
 
     	//-> The previous code could be short with:
-    	$article = Article::findOrFail($id);
+    	//$article = Article::findOrFail($id); //-> Don't use anymore because of "Route-model-binding"
 
     	return view('articles.show', compact('article'));
     }
 
     public function create(){
+
+        /*
+         * if (Auth::guest()){
+         *  return redirect('articles');
+         * }
+         *
+         **/
+
+
     	//return "hello";
     	return view('articles.create');
     }
@@ -98,5 +122,14 @@ class ArticlesController extends Controller
         $article = Article::findOrFail($id);
         
         return view('articles.edit', compact('article'));
+    }
+
+
+    public function update( $id, ArticleRequest $request ){
+        $article = Article::findOrFail($id);
+
+        $article->update( $request->all() );
+
+        return redirect('articles');
     }
 }

@@ -27,6 +27,18 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot($router);
+
+        //-> **** ROUTE MODEL BINDING *** <-//
+        $router->model('articles', 'App\Article');
+
+        /* FOR CUSTOM QUERIES AND NOT ONLY BY "ID"
+         * If you wish to use your own resolution logic, you should use the Route::bind method
+         *
+         *
+        $router->bind('user', function($value) {
+            return App\User::where('name', $value)->first();
+        });
+        */
     }
 
     /**

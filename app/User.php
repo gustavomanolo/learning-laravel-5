@@ -36,4 +36,25 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+
+    /**
+     * A user can have many articles
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function articles(){
+        return $this->hasMany('Article');
+
+        /**
+         * Normally used as $user->articles; //-> To gete all articles
+         *
+         * If want to add a constraint then use it as a function *** Collections ***
+         *  $user->articles()->where('title', 'New Article')->get();
+         */
+    }
+
+    public function isATeamManager(){
+        return false;
+    }
 }
