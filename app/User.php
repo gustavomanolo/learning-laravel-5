@@ -44,7 +44,7 @@ class User extends Model implements AuthenticatableContract,
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function articles(){
-        return $this->hasMany('Article');
+        return $this->hasMany('App\Article');
 
         /**
          * Normally used as $user->articles; //-> To gete all articles

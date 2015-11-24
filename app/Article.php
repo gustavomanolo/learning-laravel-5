@@ -20,7 +20,7 @@ class Article extends Model
 
 
     /*
-    	*** MUTATOR *** 
+    	*** MUTATOR ***
     		http://laravel.com/docs/5.1/eloquent-mutators#accessors-and-mutators
     	Follow convention "set"+"columnName(camel case)"+"Attribute"
     */
@@ -56,7 +56,23 @@ class Article extends Model
 	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
 	 */
 	public function user(){
-		return $this->belongsTo('User');
+		return $this->belongsTo('App\User');
+	}
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function tags(){
+		return $this->belongsToMany('App\Tag')->withTimestamps();
+	}
+
+	/**
+	 * Get a list of tags associated with the given article (MUTATOR)
+	 *
+	 * @return array
+	 */
+	public function getTagListAttribute(){
+		return $this->tags->lists('id')->toArray();
 	}
 
 }

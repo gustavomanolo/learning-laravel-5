@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Tag;
 use Illuminate\Http\Request;
 //use Request;//-> To be able to use Facade and call Request::all statically
 
 use App\Article;
+use App\User;
 use App\Http\Requests;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Auth;
 
 class ArticlesController extends Controller
 {
@@ -71,8 +74,10 @@ class ArticlesController extends Controller
          **/
 
 
+        $tags = Tag::lists('name', 'id');//-> The second argument says to use "key" value as "name"->column
+
     	//return "hello";
-    	return view('articles.create');
+    	return view('articles.create', compact('tags'));
     }
 
 
@@ -92,6 +97,8 @@ class ArticlesController extends Controller
             'published_at' => 'required|date'
         ]);
 
+        //$article = new Article( $request->all() );
+
 
     	//-> Get all inputs
     	//$input = Request::all();
@@ -109,26 +116,50 @@ class ArticlesController extends Controller
     	//-> **+ Create in 1 line ** 
     	//Article::create($input);
         //Article::create( $request::all() );
-        Article::create( $request->all() );
+        //Article::create( $request->all() );
 
-    	return redirect('articles');
+        //Auth::user()->articles()->save( $article );
+
+        $newArticle = Auth::user()->articles()->create( $request->all() );
+
+        //-> Attach tag ids to the new article (** UPDATE PIVOT TABLE ** <-//
+        $tagIds = $request->input('tag_list');
+
+        //-> The "attach" method only adds relationships but don't remove old ones so better use "sync"
+        $newArticle->tags()->attach( $tagIds );
+
+        //\Session::flash('flash_message', "Your article has been created");
+        /*session()->flash('flash_message', "Your article has been created");
+        session()->flash('flash_message_important', true);*/
+
+        return redirect('articles')->with([
+            'flash_message' =>  "Your article has been created",
+            'flash_message_important' => true
+        ]);
     }
 
 
     /**** Function to edit an article
     */
-    public function edit($id){
+    //-> Changed to use "Route-model-binding" so then receive an intance of the model
+    public function edit(Article $article){
+    //public function edit($id){
+        //$article = Article::findOrFail($id);
 
-        $article = Article::findOrFail($id);
-        
-        return view('articles.edit', compact('article'));
+        $tags = Tag::lists('name', 'id');//-> The second argument says to use "key" value as "name"->column
+
+        return view('articles.edit', compact('article', 'tags'));
     }
 
-
-    public function update( $id, ArticleRequest $request ){
-        $article = Article::findOrFail($id);
+    //-> Changed to use "Route-model-binding" so then receive an intance of the model
+    public function update(Article $article, ArticleRequest $request){
+        //public function update( $id, ArticleRequest $request ){
+        //$article = Article::findOrFail($id);
 
         $article->update( $request->all() );
+
+        //-> Update tags "pivot table"
+        $article->tags()->sync( $request->input('tag_list') );
 
         return redirect('articles');
     }
