@@ -15,14 +15,27 @@ var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
     //-> Search in "resources/assets/sass"
-    mix.sass('app.scss');
+    //-> The 2nd argument sets the "out put directory"
+    mix.sass('app.scss', 'resources/assets/css');
 
 
     //By default gulp search in "resources/css", so it can be changed with the "3rd argument"
-    mix.styles([
+    /*mix.styles([
        'vendor/normalize.css',
         'app.css'
-    ], 'public/output/final.css', 'public/css');
+    ], 'public/output/final.css', 'public/css');*/
+
+    mix.styles([
+       'libs/bootstrap.min.css',
+        'libs/select2.min.css',
+        'app.css'
+    ]);
+
+    mix.scripts([
+        'libs/jquery.min.js',
+        'libs/bootstrap.min.js',
+        'libs/select2.min.js'
+    ]);
 
     //-> JS files are searched in "resources/js" by default and it can be cahnged to
     /*mix.scripts([
@@ -32,7 +45,8 @@ elixir(function(mix) {
     ], 'public/output/scripts.js', 'public/js');*/
 
     //-> To version specific file "to avoid caching when making simple updates" to a CSS file
-    mix.version('public/output/final.css');
+    //mix.version('public/output/final.css');
+    mix.version(['css/all.css', 'js/all.js']);
 
     //-> To version multiple files
     //mix.version(['css/all.css', 'js/app.js']);
